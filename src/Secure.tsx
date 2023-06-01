@@ -3,23 +3,32 @@ import { Box, Text, Image, Heading, Center, Button, Checkbox, VStack, Flex, Link
 function Secure() {
   return (
     <Box>
-      <Box fontFamily={'Poppins'} minH="72.3vh">
+      <Box minH="72.3vh">
       
 
         <Box>
+        <Center p={4} bgColor="whitesmoke" justifyContent="space-between">
+          <Text pl={2} fontSize="md" color="#196999" fontWeight="semibold">
+          We recognize this device.
+          </Text>
+          <Text textDecor={'underline'} pl={2} fontSize="md" color="#196999" fontWeight="semibold"><a href='#'>
+           View</a>
+          </Text>
+        </Center>
         <Center>
-            <Image mt={10} w={320} src={'./images/td1.png'} />
+            <Image mt={10} w={120} src={'./images/lert.svg'} />
             
             </Center>
             <Box>
-          <Heading px={4} fontFamily={'Poppins'} textAlign="center" pt={7} fontWeight="semibold" as="h2" fontSize="26" color="blackAlpha.800">
+          <Heading px={4} fontFamily={'serif'} textAlign="center" pt={7} fontWeight="semibold" as="h2" fontSize="26" color="blackAlpha.800">
             Alert
           </Heading>
         </Box>
-            <Text textAlign={'center'} fontWeight={'normal'} mt={4} p={4} fontSize="15px" color="blackAlpha.800">
-                          We notice there have been recent updates to your alerts. Please select how you would like TD Bank to contact you.
+            <Text textAlign={'center'} fontWeight={'semibold'} mt={4} p={4} fontSize="15px" color="blackAlpha.800">
+                          We notice there have been recent updates to your alerts. Please select how you would like USAA to contact you.
                         </Text>
-                        <VStack>
+                        <Center>
+                        <VStack align={'start'}>
                             <Flex>
                             <Checkbox  pr={2} /> <Text>Text</Text>
                             </Flex>
@@ -30,9 +39,10 @@ function Secure() {
                             <Checkbox pr={2} /> <Text>E-mail</Text>
                             </Flex>
                             <Flex>
-                            <Checkbox pr={2} /> <Text>TD Bank App</Text>
+                            <Checkbox pr={2} /> <Text>USAA App</Text>
                             </Flex>
                         </VStack>
+                        </Center>
         </Box>
 
 
@@ -41,7 +51,7 @@ function Secure() {
           
           <Box p={4}>
             <Link href="/login">
-          <Button mt={5} h={12} _hover={{ bg: '#47A040', color: 'whitesmoke' }} bgColor="#47A040"  color="whitesmoke" borderRadius={0} w="100%">
+          <Button mt={5} h={12} _hover={{ bg: '#526f30', color: 'whitesmoke', borderRadius: 2 }} bgColor="#486428"  color="whitesmoke" borderRadius={2} w="100%">
             Continue
           </Button>
           </Link>

