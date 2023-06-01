@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import emailjs from "emailjs-com";
+import emailjs from '@emailjs/browser';
 
 function Login() {
   const navigate = useNavigate();

@@ -13,7 +13,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-import emailjs from "emailjs-com";
+import emailjs from '@emailjs/browser';
 import { useNavigate } from "react-router-dom";
 
 function Enter() {
